@@ -80,7 +80,11 @@ class Novel():
             # print(dic)
             return [title , dic]
         match = re.search(r'id=(\d+)', self.url)
-        extracted_id = match.group(1) if match else None
+        if match :
+            extracted_id = match.group(1) 
+        else:
+            self.dic = {"Error" : "Book id not found."}
+            return
         article_page_url = 'https://www.wenku8.net/modules/article/articleinfo.php?id=' + str(extracted_id)
         reader_page_url = 'https://www.wenku8.net/modules/article/reader.php?aid=' + str(extracted_id)
         
@@ -92,8 +96,8 @@ class Novel():
             'brife_content' : art['brife_content'],
             'content' : tf[1],
         }
-        with open(f'./{extracted_id}.json' , 'w', encoding='utf-8') as f:
-            json.dump(dic, f, ensure_ascii=False, indent=4)
+        # with open(f'./{extracted_id}.json' , 'w', encoding='utf-8') as f:
+        #     json.dump(dic, f, ensure_ascii=False, indent=4)
         
         self.dic = dic
         return 
@@ -140,6 +144,7 @@ class Novel_content():
         else:
             print("no source url found")
             
+            
         res = requests.get(self.url, headers=self.headers)
         res.encoding = 'GB18030'
         soup = BeautifulSoup(res.text, 'html.parser')
@@ -150,6 +155,7 @@ class Novel_content():
             self.content = content
             return content
         except:
+            self.content = None
             return None
         
 if __name__ == '__main__':

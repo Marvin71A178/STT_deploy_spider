@@ -31,7 +31,10 @@ async def cat_Novel_catalog(request: process_Novel_class):
     try:
         novel = Novel(request.url)  # 初始化 Novel 對象
         result = await run_in_threadpool(novel.check_website)  # 異步執行網站檢查
-        return novel.dic  # 返回字典結果
+        if isinstance(novel.dic , dict):
+            return novel.dic  # 返回字典結果
+        else:
+            return {"Error" : "Error not found."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -40,7 +43,10 @@ async def cat_Novel_page_content(request: process_Novel_class):
     try:
         novel_content = Novel_content(request.url)  # 初始化 Novel_content 對象
         content = await run_in_threadpool(novel_content.check_website)  # 異步執行網站檢查
-        return novel_content.content  # 返回頁面內容
+        if isinstance(novel_content.content , str):
+            return novel_content.content  # 返回字典結果
+        else:
+            return "Page not found error."
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
