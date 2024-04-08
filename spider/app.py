@@ -51,6 +51,6 @@ async def cat_Novel_page_content(request: process_Novel_class):
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 8060))
+    port = int(os.getenv('PORT', 8080))
     uvicorn.run(app , host = '0.0.0.0' , port = port)
     
